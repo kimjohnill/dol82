@@ -1,0 +1,450 @@
+:root {
+    --color-background: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--color-background);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+}
+
+body.disable-scroll {
+    overflow: hidden;
+}
+
+#hero {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+#menu-bottom {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+#menu-right {
+  flex-direction: column !important;
+  display: flex !important;
+}
+
+.icon-menu {
+  position: fixed;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  background: none;
+  transition:
+    opacity 0.5s cubic-bezier(.77,0,.175,1),
+    left 0.7s cubic-bezier(.77,0,.175,1),
+    right 0.7s cubic-bezier(.77,0,.175,1),
+    top 0.7s cubic-bezier(.77,0,.175,1),
+    bottom 0.7s cubic-bezier(.77,0,.175,1),
+    transform 0.7s cubic-bezier(.77,0,.175,1);
+}
+
+.icon-menu.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.icon-menu.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.icon-menu.bottom-center {
+  left: 50%;
+  bottom: 18px;
+  right: auto !important;
+  top: auto !important;
+  transform: translateX(-50%);
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.icon-menu.right-side {
+  left: auto !important;
+  bottom: auto !important;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.icon-btn {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #353535;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  transition:
+    background 0.2s, color 0.2s, box-shadow 0.2s,
+    opacity 0.45s cubic-bezier(.77,0,.175,1),
+    transform 0.5s cubic-bezier(.77,0,.175,1);
+  opacity: 0;
+  transform: scale(0.85);
+}
+
+/* Button reveal (used for "wave in" effect) */
+.icon-btn.wave-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.icon-btn:hover, .icon-btn:focus {
+  background: #353535;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(53,53,53,0.12);
+}
+.icon-btn:active {
+  background: #444;
+}
+.icon-btn i {
+  pointer-events: none;
+}
+
+.icon-btn.active {
+  background: #353535 !important;
+  color: #fff !important;
+}
+
+.content-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px;
+    background: var(--color-background);
+    position: relative;
+    z-index: 10;
+}
+
+.content-section .inner {
+    max-width: 800px;
+    text-align: center;
+}
+
+.content-section h2 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    font-size: 48px;
+    color: #353535;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+}
+
+.content-section p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #666;
+}
+
+#about {
+    position: relative;
+    background: var(--color-background);
+    z-index: 10;
+    padding: 0;
+}
+
+.about-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+}
+
+.about-left {
+    width: 50%;
+    padding: 80px 120px 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.about-right {
+    width: 50%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.about-carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.about-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 3s ease-in-out;
+}
+
+.about-image.active {
+    opacity: 1;
+}
+
+.about-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    font-size: 120px;
+    color: #353535;
+    letter-spacing: -0.05em;
+    margin-bottom: 60px;
+    line-height: 1;
+}
+
+.about-text {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 40px;
+    font-weight: 200;
+}
+
+.about-text.large {
+    font-size: 14px;
+    font-weight: 200;
+    margin-bottom: 20px;
+}
+
+.about-text em {
+    font-style: normal;
+    color: #353535;
+}
+
+/* --------------------------------------------
+   ABOUT LEFT: STACKED IMAGES (PINNED SCROLL)
+-------------------------------------------- */
+
+.about-left-stack {
+  margin-top: 24px;
+  position: relative;
+}
+
+.about-left-stack .stack-stage {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 4 / 5;
+  overflow: visible;
+  padding-bottom: 100px;
+}
+
+.stack-card {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 88%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  transform-origin: center bottom;
+  background: #ddd;
+  will-change: transform;
+}
+
+.stack-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stack-card-1 { top: 0;      z-index: 3; }
+.stack-card-2 { top: 40px;   z-index: 2; }
+.stack-card-3 { top: 80px;  z-index: 1; }
+
+.stack-caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 14px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.55));
+  color: #fff;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.creators-section {
+    position: relative;
+    background: var(--color-background);
+    z-index: 10;
+    padding: 120px 60px 120px 60px;
+    min-height: 100vh;
+}
+
+.creators-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    font-size: 120px;
+    color: #353535;
+    letter-spacing: -0.05em;
+    margin-bottom: 50px;
+    line-height: 1;
+    text-align: center;
+}
+
+.creators-grid {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.creator-card {
+  flex: 1 1 320px;        /* Allows flexible growing, minimum 320px */
+  max-width: 480px;       /* Cap at large desktop size */
+  text-align: left;
+}
+.creator-image {
+  width: 100%;           /* Scales to card/container */
+  max-width: 520px;      /* Cap for desktop, adjust as needed */
+  aspect-ratio: 5/4;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.creator-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.creator-name {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #353535;
+    margin-left: 10px;
+}
+
+.creator-bio {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #353535;
+    font-weight: 200;
+      margin-left: 10px;
+}
+
+.creators-title-carousel {
+  width: 100vw;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 50px;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 60px; /* or something that looks right */
+  align-items: center;
+  /* Set minimum width to keep track centered on large screens */
+  min-width: 100vw;
+  will-change: transform;
+}
+
+.carousel-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  font-size: 120px;
+  color: #353535;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  transition: color 0.3s;
+}
+
+@media (max-width: 1024px) {
+    .creators-grid {
+        gap: 40px;
+    }
+    .creators-title {
+        font-size: 80px;
+    }
+}
+
+@media (max-width: 900px) {
+  .about-left-stack .stack-stage {
+    max-width: 100%;
+    aspect-ratio: 3 / 4;
+    padding-bottom: 60px;
+  }
+  .stack-card { border-radius: 12px; }
+
+  .icon-menu {
+    gap: 28px;
+  }
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+    .carousel-title { font-size: 80px; }
+}
+
+@media (max-width: 768px) {
+    .creators-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    .creators-title {
+        font-size: 60px;
+        margin-bottom: 60px;
+    }
+}
+
+@media (max-width: 600px) {
+.carousel-title { font-size: 48px; }
+.carousel-track { gap: 20px; }
+}

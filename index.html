@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossy Face Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Your external stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="hero"></div>
+    <!-- Bottom icon menu (horizontal row layout) -->
+    <nav class="icon-menu bottom-center show" id="menu-bottom">
+      <button class="icon-btn"><i class="fas fa-home"></i></button>
+      <button class="icon-btn"><i class="fas fa-info-circle"></i></button>
+      <button class="icon-btn"><i class="fas fa-users"></i></button>
+      <button class="icon-btn"><i class="fas fa-envelope"></i></button>
+      <button class="icon-btn"><i class="fas fa-shopping-bag"></i></button>
+    </nav>
+    <!-- Right-side icon menu (vertical layout, initially hidden) -->
+    <nav class="icon-menu right-side hide" id="menu-right">
+      <button class="icon-btn"><i class="fas fa-home"></i></button>
+      <button class="icon-btn"><i class="fas fa-info-circle"></i></button>
+      <button class="icon-btn"><i class="fas fa-users"></i></button>
+      <button class="icon-btn"><i class="fas fa-envelope"></i></button>
+      <button class="icon-btn"><i class="fas fa-shopping-bag"></i></button>
+    </nav>
+    <div style="height: 100vh;"></div>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="about-container">
+            <div class="about-left">
+                <h2 class="about-title">ABOUT</h2>
+                <h3 class="about-text" style="font-style: normal; font-size: 16px; margin-top: 0px; margin-bottom: 10px; font-weight: 400;">
+                    einsteinInseoul
+                </h3>
+                <p class="about-text large">아인쉬타인인서울을 서울의 돌은 최상의 품질을 추구합니다.</p>
+                <p class="about-text">
+                    한국과 프랑스 명품제작방식인 쇠바느질과 기계 자수등을 표본으로 소품과 연구소를 운영하고 있으며
+                    최상의 퀄리티와 최고의 장인을 통한 전문가 양성을 위한 교육의 비전도 가지고 있습니다.
+                </p>
+                <h3 class="about-text" style="font-style: normal; font-size: 16px; margin-top: 0px; margin-bottom: 10px; font-weight: 400;">
+                    Poetic Moments in Everyday Life
+                </h3>
+                <p class="about-text">
+                    아인쉬타인인서울은 einstein은 독일어로 하나의 돌을 의미합니다. 서울의 돌은 우리가 흔히 지나치는 돌에서 영감을 얻은 이름입니다.
+                    지금의 내가 쓰는 물건은 과거에서 현재, 미래의 나를 반영합니다. 쓸때 쓸수록 나를 닮아가는 서울의 돌처럼
+                    사랑하는 사람에게 소중한 추억을 선물해보세요.
+                </p>
+                <h3 class="about-text" style="font-style: normal; font-size: 16px; margin-top: 0px; margin-bottom: 10px; font-weight: 400;">
+                    Moments poétiques de la vie quotidienne
+                </h3>
+                <p class="about-text">
+                    서울의 돌 하우스 오브 스타(einsteinInseoul House of STARs)를 곧 선보일 예정입니다.
+                    영원한 상징인 시간이 지나도 변하지 않는 아름다움을 담은 예술적이고 모던한 공간과
+                    서울의 돌에서 가장 사랑받는 컬렉션의 첫번째 디자인을 만나보세요.
+                </p>
+                <div class="about-left-stack" aria-label="Process image stack">
+                  <div class="stack-stage">
+                    <figure class="stack-card stack-card-1">
+                      <img src="img/process/bw_1.jpg" alt="Process photo 1" />
+                      <figcaption class="stack-caption">First step description</figcaption>
+                    </figure>
+                    <figure class="stack-card stack-card-2">
+                      <img src="img/process/bw_2.jpg" alt="Process photo 2" />
+                      <figcaption class="stack-caption">Second step description</figcaption>
+                    </figure>
+                    <figure class="stack-card stack-card-3">
+                      <img src="img/process/bw_3.jpg" alt="Process photo 3" />
+                      <figcaption class="stack-caption">Third step description</figcaption>
+                    </figure>
+                  </div>
+                </div>
+            </div>
+            <div class="about-right">
+                <div class="about-carousel">
+                    <img src="img/img_01.jpg" alt="About Image 1" class="about-image active">
+                    <img src="img/img_02.jpg" alt="About Image 2" class="about-image">
+                    <img src="img/img_03.jpg" alt="About Image 3" class="about-image">
+                    <img src="img/img_04.jpg" alt="About Image 4" class="about-image">
+                    <img src="img/img_05.jpg" alt="About Image 5" class="about-image">
+                    <img src="img/img_06.jpg" alt="About Image 6" class="about-image">
+                    <img src="img/img_07.jpg" alt="About Image 7" class="about-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creators Section -->
+    <section id="creators" class="creators-section">
+      <div class="creators-title-carousel">
+        <div class="carousel-track">
+          <span class="carousel-title">CREATORS</span>
+          <span class="carousel-title">CREATORS</span>
+          <span class="carousel-title">CREATORS</span>
+          <span class="carousel-title">CREATORS</span>
+        </div>
+      </div>
+      <div class="creators-grid">
+        <div class="creator-card">
+          <div class="creator-image" data-speed="0.5">
+            <img src="img/creators/kyuin.jpg" alt="Kyuin">
+          </div>
+          <h3 class="creator-name">NAME</h3>
+          <p class="creator-bio">Brief description for name goes here.</p>
+        </div>
+        <div class="creator-card">
+          <div class="creator-image" data-speed="0.5">
+            <img src="img/creators/mina.jpg" alt="Mina">
+          </div>
+          <h3 class="creator-name">NAME</h3>
+          <p class="creator-bio">Brief description for name goes here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="content-section">
+        <div class="inner">
+            <h2>CONTACT</h2>
+            <p>Get in touch with us at <a href="mailto:hello@dolbag.com">hello@dolbag.com</a> or follow us on social media. We'd love to hear from you and answer any questions about our products.</p>
+        </div>
+    </section>
+
+    <!-- Scripts and libraries -->
+    <script type="importmap">
+     {
+         "imports": {
+             "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+             "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+         }
+     }
+    </script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <!-- Your external JS file -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
