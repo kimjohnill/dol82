@@ -46,6 +46,30 @@ requestAnimationFrame(raf);
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+// Place this block RIGHT AFTER:
+window.addEventListener('load', () => {
+  if (isMobile) {
+    // Hide bottom menu, show right menu for mobile
+    document.getElementById('menu-bottom').classList.remove('show');
+    document.getElementById('menu-bottom').classList.add('hide');
+    document.getElementById('menu-right').classList.remove('hide');
+    document.getElementById('menu-right').classList.add('show');
+    waveInMenu('menu-right', "right");
+    setActiveMenuIcon('hero');
+    menuState = "right";
+  } else {
+    // Show bottom menu, hide right menu for desktop
+    document.getElementById('menu-right').classList.remove('show');
+    document.getElementById('menu-right').classList.add('hide');
+    document.getElementById('menu-bottom').classList.remove('hide');
+    document.getElementById('menu-bottom').classList.add('show');
+    waveInMenu('menu-bottom', "bottom");
+    setActiveMenuIcon('hero');
+    menuState = "bottom";
+  }
+});
+
+
 // THREE.js scene
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xffffff);
