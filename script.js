@@ -415,52 +415,57 @@ function setupStackScrollTrigger() {
 
 // ---------- Creators Section Parallax -------------
 
+
 function setupAboutParallax() {
-  const aboutTitle = document.querySelector('.about-title');
-  const aboutTexts = document.querySelectorAll('.about-left .about-text, .about-left .about-text.large');
+const aboutTitle = document.querySelector('.about-title');
+// Select ALL immediate children of .about-left that have relevant class - can target more specifically if desired
+const aboutTexts = document.querySelectorAll('.about-left .about-text, .about-left .about-text.large');
 
-  // Parallax the title
-  if (aboutTitle) {
-    gsap.to(aboutTitle, {
-      y: -50,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".about-container",
-        start: "top 85%",
-        end: "top 15%",
-        scrub: true,
-        scroller: document.body
-      }
-    });
-  }
+// Parallax the title
+if (aboutTitle) {
+gsap.to(aboutTitle, {
+y: -50,    // Adjust speed/amplitude
+ease: "none",
+scrollTrigger: {
+ trigger: ".about-container",
+ start: "top 85%",   // Adjust as needed
+ end: "top 15%",
+ scrub: true,
+ scroller: document.body
+}
+});
+}
 
-  // Parallax all main text below ("as a group")
-  if (aboutTexts.length) {
-    gsap.to(aboutTexts, {
-      y: -100,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".about-container",
-        start: "top 85%",
-        end: "top 15%",
-        scrub: true,
-        scroller: document.body
-      }
-    });
-  }
+// Parallax all main text below ("as a group")
+if (aboutTexts.length) {
+gsap.to(aboutTexts, {
+y: -100,               // Less than grid for subtlety (or larger for more motion)
+ease: "none",
+scrollTrigger: {
+ trigger: ".about-container",
+ start: "top 85%",
+ end: "top 15%",
+ scrub: true,
+ scroller: document.body
+}
+});
+}
 }
 
 window.addEventListener('load', () => {
-  setupAboutParallax();
-  setupCreatorsParallax();
-  ScrollTrigger.refresh();
+setupAboutParallax();
+setupCreatorsParallax();
+ScrollTrigger.refresh();
 });
 window.addEventListener('resize', () => {
-  ScrollTrigger.getAll().forEach(t => t.kill());
-  setupAboutParallax();
-  setupCreatorsParallax();
-  ScrollTrigger.refresh();
+ScrollTrigger.getAll().forEach(t => t.kill());
+setupAboutParallax();
+setupCreatorsParallax();
+ScrollTrigger.refresh();
 });
+
+
+
 
 window.addEventListener('load', () => {
   setupStackScrollTrigger();
@@ -650,11 +655,11 @@ function setupCreatorsTitleCarousel() {
   if (!track) return;
 
   // Get the width of one loop (all children titles + gaps)
-  const trackWidth = track.scrollWidth;
+  const trackWidth = track.scrollWidth; // total width of all titles
 
   // Animate horizontal movement on scroll
   gsap.to(track, {
-    x: () => `-${trackWidth / 2}px`,
+    x: () => `-${trackWidth / 2}px`, // Move half the loop width, tweak as desired for effect
     ease: "none",
     scrollTrigger: {
       trigger: ".creators-section",
@@ -665,6 +670,10 @@ function setupCreatorsTitleCarousel() {
     },
     modifiers: {
       x: gsap.utils.unitize(x => {
+        // Optional: if you want seamless looping appearance
+        // Uncomment below to enable "wrap-around" infinite loop illusion
+        // const limit = trackWidth;
+        // return `${(parseFloat(x) % limit)}px`;
         return x;
       }),
     }
@@ -673,10 +682,12 @@ function setupCreatorsTitleCarousel() {
 
 window.addEventListener('load', () => {
   setupCreatorsTitleCarousel();
+  // ... other setup/parallax calls ...
   ScrollTrigger.refresh();
 });
 window.addEventListener('resize', () => {
   ScrollTrigger.getAll().forEach(t => t.kill());
   setupCreatorsTitleCarousel();
+  // ... other setup/parallax calls ...
   ScrollTrigger.refresh();
 });
