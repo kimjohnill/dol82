@@ -454,13 +454,11 @@ scrollTrigger: {
 
 window.addEventListener('load', () => {
 setupAboutParallax();
-setupCreatorsParallax();
 ScrollTrigger.refresh();
 });
 window.addEventListener('resize', () => {
 ScrollTrigger.getAll().forEach(t => t.kill());
 setupAboutParallax();
-setupCreatorsParallax();
 ScrollTrigger.refresh();
 });
 
