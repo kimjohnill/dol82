@@ -345,6 +345,26 @@ function animate() {
       document.body.classList.remove('disable-scroll');
       lenis.start();
     }
+
+  // Mobile: wave in right menu, keep it visible always
+  if (isMobile) {
+    document.getElementById('menu-bottom').classList.remove('show');
+    document.getElementById('menu-bottom').classList.add('hide');
+    document.getElementById('menu-right').classList.remove('hide');
+    document.getElementById('menu-right').classList.add('show');
+    waveInMenu('menu-right', "right");
+    setActiveMenuIcon('hero');
+    menuState = "right";
+  } else {
+    // Desktop: show bottom menu etc
+    document.getElementById('menu-right').classList.remove('show');
+    document.getElementById('menu-right').classList.add('hide');
+    document.getElementById('menu-bottom').classList.remove('hide');
+    document.getElementById('menu-bottom').classList.add('show');
+    waveInMenu('menu-bottom', "bottom");
+    setActiveMenuIcon('hero');
+    menuState = "bottom";
+  }
   }
   if (!isAnimatingEntrance && !isTextAnimating) {
     // Parallax scroll
@@ -606,6 +626,7 @@ let menuState = "bottom";
 let isMenuTransitioning = false;
 
 lenis.on('scroll', ({ scroll }) => {
+  if (isMobile) return; // --- This line disables menu swapping on mobile ---
   if (isMenuTransitioning) return;
   if (scroll > 10 && menuState === "bottom") {
     isMenuTransitioning = true;
@@ -625,6 +646,7 @@ lenis.on('scroll', ({ scroll }) => {
     });
   }
 });
+
 
 // ---- MENU BUTTON BEHAVIOR ----
 [...document.querySelectorAll('#menu-right .icon-btn'), ...document.querySelectorAll('#menu-bottom .icon-btn')].forEach((btn, idx) => {
