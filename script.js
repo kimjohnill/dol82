@@ -470,7 +470,6 @@ ScrollTrigger.refresh();
 window.addEventListener('load', () => {
   setupStackScrollTrigger();
   setTimeout(() => {
-    setupCreatorsParallax();
     ScrollTrigger.refresh();
   }, 100);
 });
@@ -478,7 +477,6 @@ window.addEventListener('resize', () => {
   ScrollTrigger.getAll().forEach(t => t.kill());
   setupStackScrollTrigger();
   setTimeout(() => {
-    setupCreatorsParallax();
     ScrollTrigger.refresh();
   }, 100);
 });

@@ -34,8 +34,8 @@ body.disable-scroll {
 }
 
 #menu-right {
-  flex-direction: column !important;
   display: flex !important;
+  flex-direction: column !important;
 }
 
 .icon-menu {
@@ -69,7 +69,6 @@ body.disable-scroll {
   right: auto !important;
   top: auto !important;
   transform: translateX(-50%);
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 40px;
@@ -81,7 +80,6 @@ body.disable-scroll {
   right: 30px;
   top: 50%;
   transform: translateY(-50%);
-  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   gap: 20px;
@@ -100,7 +98,6 @@ body.disable-scroll {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
   transition:
     background 0.2s, color 0.2s, box-shadow 0.2s,
     opacity 0.45s cubic-bezier(.77,0,.175,1),
