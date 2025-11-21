@@ -18,6 +18,22 @@ body.disable-scroll {
     overflow: hidden;
 }
 
+.icon-menu,
+.icon-btn,
+.stack-card,
+.about-image,
+.carousel-track,
+#hero,
+#menu-bottom,
+#menu-right,
+.about-title,
+.carousel-title {
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translate3d(0,0,0);
+}
+
 #hero {
     width: 100vw;
     height: 100vh;
