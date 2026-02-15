@@ -29,6 +29,16 @@ body {
     overflow-x: hidden;
 }
 
+::selection {
+    background-color: #353535;
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background-color: #353535;
+    color: #ffffff;
+}
+
 #hero-container {
     width: 100vw;
     height: 100vh;
@@ -77,7 +87,7 @@ body {
 .face-label {
     font-family: 'Roboto', sans-serif;
     font-weight: 900;
-    font-size: 20px;
+    font-size: 30px;
     letter-spacing: 0.1em;
     color: #353535;
     margin-top: -50px;
