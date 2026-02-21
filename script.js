@@ -195,6 +195,10 @@ function createFace(material) {
 const heroFace = createFace(glossyMaterial);
 heroScene.add(heroFace);
 
+// base position for parallax reference
+const baseFaceY = 0;
+heroFace.position.y = baseFaceY;
+
 if (isMobile) {
     heroFace.visible = true;
     heroFace.position.y = -0.5;
@@ -384,15 +388,20 @@ function updateContactOnScroll() {
 window.addEventListener('scroll', updateContactOnScroll);
 updateContactOnScroll();
 
-// ===== SIMPLE PARALLAX ON SCROLL (HERO) =====
+// ===== SUBTLE RELATIVE PARALLAX (HERO) =====
+const parallaxStrength = 0.01;   // overall movement – small and subtle
+const faceLeadFactor = 0.3;      // face moves slightly more than text
+
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
 
-    const faceOffset = scrollY * 0.02;
-    const textOffset = scrollY * 0.01;
+    const offset = scrollY * parallaxStrength;
 
-    heroFace.position.y = -faceOffset;
-    textMesh.position.y = baseTextY - textOffset;
+    // Text: small movement
+    textMesh.position.y = baseTextY - offset;
+
+    // Face: slightly more, so it feels separated in depth
+    heroFace.position.y = baseFaceY - offset * (1 + faceLeadFactor);
 });
 
 window.addEventListener('resize', () => {
