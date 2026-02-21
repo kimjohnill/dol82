@@ -55,10 +55,11 @@ const textMaterial = new THREE.MeshBasicMaterial({
     depthWrite: false
 });
 
+const baseTextY = isMobile ? 4 : 3.9;
 const textScale = isMobile ? 0.25 : 1;
 const textGeometry = new THREE.PlaneGeometry(32 * textScale, 9.5 * textScale);
 textMesh = new THREE.Mesh(textGeometry, textMaterial);
-textMesh.position.set(0, isMobile ? 4 : 3.9, isMobile ? 0 : -5);
+textMesh.position.set(0, baseTextY, isMobile ? 0 : -5);
 heroScene.add(textMesh);
 
 function drawText(scaleProgress) {
@@ -142,35 +143,35 @@ function createFace(material) {
 
     const leftEdge = new THREE.CylinderGeometry(tubeRadius, tubeRadius, height - radius, 64);
     const leftEdgeMesh = new THREE.Mesh(leftEdge, material);
-    leftEdgeMesh.position.set(-width/2, radius/2, 0);
+    leftEdgeMesh.position.set(-width / 2, radius / 2, 0);
     faceGroup.add(leftEdgeMesh);
 
     const rightEdge = new THREE.CylinderGeometry(tubeRadius, tubeRadius, height - radius, 64);
     const rightEdgeMesh = new THREE.Mesh(rightEdge, material);
-    rightEdgeMesh.position.set(width/2, radius/2, 0);
+    rightEdgeMesh.position.set(width / 2, radius / 2, 0);
     faceGroup.add(rightEdgeMesh);
 
     const topEdgeWidth = width + (1.5 * tubeRadius);
     const topEdge = new THREE.CylinderGeometry(tubeRadius, tubeRadius, topEdgeWidth, 64);
     const topEdgeMesh = new THREE.Mesh(topEdge, material);
     topEdgeMesh.rotation.z = Math.PI / 2;
-    topEdgeMesh.position.set(0, height/2, 0);
+    topEdgeMesh.position.set(0, height / 2, 0);
     faceGroup.add(topEdgeMesh);
 
     const topLeftCap = new THREE.SphereGeometry(tubeRadius, 32, 32);
     const topLeftCapMesh = new THREE.Mesh(topLeftCap, material);
-    topLeftCapMesh.position.set(-width/2, height/2, 0);
+    topLeftCapMesh.position.set(-width / 2, height / 2, 0);
     faceGroup.add(topLeftCapMesh);
 
     const topRightCap = new THREE.SphereGeometry(tubeRadius, 32, 32);
     const topRightCapMesh = new THREE.Mesh(topRightCap, material);
-    topRightCapMesh.position.set(width/2, height/2, 0);
+    topRightCapMesh.position.set(width / 2, height / 2, 0);
     faceGroup.add(topRightCapMesh);
 
     const bottomArc = new THREE.TorusGeometry(radius, tubeRadius, 32, 128, Math.PI);
     const bottomArcMesh = new THREE.Mesh(bottomArc, material);
     bottomArcMesh.rotation.z = Math.PI;
-    bottomArcMesh.position.set(0, -height/2 + radius, 0);
+    bottomArcMesh.position.set(0, -height / 2 + radius, 0);
     faceGroup.add(bottomArcMesh);
 
     const leftEyeGeometry = new THREE.SphereGeometry(0.4, 64, 32);
@@ -382,6 +383,17 @@ function updateContactOnScroll() {
 
 window.addEventListener('scroll', updateContactOnScroll);
 updateContactOnScroll();
+
+// ===== SIMPLE PARALLAX ON SCROLL (HERO) =====
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    const faceOffset = scrollY * 0.02;
+    const textOffset = scrollY * 0.01;
+
+    heroFace.position.y = -faceOffset;
+    textMesh.position.y = baseTextY - textOffset;
+});
 
 window.addEventListener('resize', () => {
     heroCamera.aspect = window.innerWidth / window.innerHeight;
