@@ -250,10 +250,10 @@ document.addEventListener('mouseleave', () => { mouseX = 0; mouseY = 0; });
 window.addEventListener('scroll', () => {
     if (isAnimatingEntrance) return; // don't fight entrance animation
     const t = Math.min(window.scrollY / window.innerHeight, 1);
-    // text moves up gently
-    textMesh.position.y = baseTextY - t * 0.4;
-    // face moves up a little more — creates the offset
-    heroFace.position.y = baseFaceY - t * 0.8;
+// text moves up gently
+textMesh.position.y = baseTextY - t * 0.7;
+// face moves up a little more — creates the offset
+heroFace.position.y = baseFaceY - t * 1.4;
 });
 
 // ===== GRID FACES =====
