@@ -7,12 +7,17 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 const heroScene = new THREE.Scene();
 heroScene.background = null;
 
-const heroCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+const heroCamera = new THREE.PerspectiveCamera(
+    60,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+);
 heroCamera.position.set(0, 0, isMobile ? 12 : 8);
 
 const heroRenderer = new THREE.WebGLRenderer({
     antialias: true,
-    powerPreference: "high-performance",
+    powerPreference: 'high-performance',
     stencil: true,
     alpha: true
 });
@@ -31,7 +36,7 @@ const glossyMaterial = new THREE.MeshStandardMaterial({
     envMapIntensity: 0.8
 });
 
-// Text setup
+// ===== TEXT SETUP =====
 let textMesh = null;
 let ctx3D = null;
 let textTexture = null;
@@ -59,7 +64,8 @@ const baseTextY = isMobile ? 4 : 3.9;
 const textScale = isMobile ? 0.25 : 1;
 const textGeometry = new THREE.PlaneGeometry(32 * textScale, 9.5 * textScale);
 textMesh = new THREE.Mesh(textGeometry, textMaterial);
-textMesh.position.set(0, baseTextY, isMobile ? 0 : -5);
+// Slight Z difference to give depth, but no scroll movement
+textMesh.position.set(0, baseTextY, -5);
 heroScene.add(textMesh);
 
 function drawText(scaleProgress) {
@@ -87,7 +93,7 @@ function drawText(scaleProgress) {
     textTexture.needsUpdate = true;
 }
 
-// Shadow for hero face
+// ===== SHADOW FOR HERO FACE =====
 const canvas = document.createElement('canvas');
 canvas.width = 512;
 canvas.height = 512;
@@ -132,7 +138,7 @@ shadowMesh.position.y = -3.5;
 shadowMesh.visible = false;
 heroScene.add(shadowMesh);
 
-// Helper function to create a face
+// ===== FACE GEOMETRY =====
 function createFace(material) {
     const faceGroup = new THREE.Group();
 
@@ -141,18 +147,33 @@ function createFace(material) {
     const radius = 2.3;
     const tubeRadius = 0.15;
 
-    const leftEdge = new THREE.CylinderGeometry(tubeRadius, tubeRadius, height - radius, 64);
+    const leftEdge = new THREE.CylinderGeometry(
+        tubeRadius,
+        tubeRadius,
+        height - radius,
+        64
+    );
     const leftEdgeMesh = new THREE.Mesh(leftEdge, material);
     leftEdgeMesh.position.set(-width / 2, radius / 2, 0);
     faceGroup.add(leftEdgeMesh);
 
-    const rightEdge = new THREE.CylinderGeometry(tubeRadius, tubeRadius, height - radius, 64);
+    const rightEdge = new THREE.CylinderGeometry(
+        tubeRadius,
+        tubeRadius,
+        height - radius,
+        64
+    );
     const rightEdgeMesh = new THREE.Mesh(rightEdge, material);
     rightEdgeMesh.position.set(width / 2, radius / 2, 0);
     faceGroup.add(rightEdgeMesh);
 
-    const topEdgeWidth = width + (1.5 * tubeRadius);
-    const topEdge = new THREE.CylinderGeometry(tubeRadius, tubeRadius, topEdgeWidth, 64);
+    const topEdgeWidth = width + 1.5 * tubeRadius;
+    const topEdge = new THREE.CylinderGeometry(
+        tubeRadius,
+        tubeRadius,
+        topEdgeWidth,
+        64
+    );
     const topEdgeMesh = new THREE.Mesh(topEdge, material);
     topEdgeMesh.rotation.z = Math.PI / 2;
     topEdgeMesh.position.set(0, height / 2, 0);
@@ -193,11 +214,10 @@ function createFace(material) {
 }
 
 const heroFace = createFace(glossyMaterial);
-heroScene.add(heroFace);
-
-// base position for parallax reference
+// Slightly closer to camera than text to give depth
 const baseFaceY = 0;
-heroFace.position.y = baseFaceY;
+heroFace.position.set(0, baseFaceY, -4.5);
+heroScene.add(heroFace);
 
 if (isMobile) {
     heroFace.visible = true;
@@ -210,6 +230,7 @@ if (isMobile) {
     heroFace.visible = false;
 }
 
+// ===== LIGHTS =====
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 heroScene.add(ambientLight);
 
@@ -229,13 +250,24 @@ const spotLight = new THREE.PointLight(0xffffff, 2.0, 100);
 spotLight.position.set(0, 3, 7);
 heroScene.add(spotLight);
 
-const mouthLight = new THREE.SpotLight(0xffffff, 2.0, 50, Math.PI / 6, 0.5, 1);
+const mouthLight = new THREE.SpotLight(
+    0xffffff,
+    2.0,
+    50,
+    Math.PI / 6,
+    0.5,
+    1
+);
 mouthLight.position.set(0, 2, 6);
 heroScene.add(mouthLight);
 
 const pmremGenerator = new THREE.PMREMGenerator(heroRenderer);
-heroScene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+heroScene.environment = pmremGenerator.fromScene(
+    new RoomEnvironment(),
+    0.04
+).texture;
 
+// ===== ENTRANCE ANIMATION =====
 let isAnimatingEntrance = !isMobile;
 let entranceProgress = 0;
 const entranceStartY = 20;
@@ -244,6 +276,7 @@ const entranceSpinSpeed = Math.PI * 8;
 const entranceDuration = 1500;
 let entranceStartTime = 0;
 
+// ===== INPUT (MOUSE / TOUCH) =====
 let mouseX = 0;
 let mouseY = 0;
 let isTouching = false;
@@ -253,22 +286,30 @@ document.addEventListener('mousemove', (event) => {
     mouseY = -((event.clientY / window.innerHeight) * 2 - 1);
 });
 
-document.addEventListener('touchstart', (event) => {
-    isTouching = true;
-    if (event.touches.length > 0) {
-        const touch = event.touches[0];
-        mouseX = (touch.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -((touch.clientY / window.innerHeight) * 2 - 1);
-    }
-}, { passive: true });
+document.addEventListener(
+    'touchstart',
+    (event) => {
+        isTouching = true;
+        if (event.touches.length > 0) {
+            const touch = event.touches[0];
+            mouseX = (touch.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -((touch.clientY / window.innerHeight) * 2 - 1);
+        }
+    },
+    { passive: true }
+);
 
-document.addEventListener('touchmove', (event) => {
-    if (event.touches.length > 0) {
-        const touch = event.touches[0];
-        mouseX = (touch.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -((touch.clientY / window.innerHeight) * 2 - 1);
-    }
-}, { passive: true });
+document.addEventListener(
+    'touchmove',
+    (event) => {
+        if (event.touches.length > 0) {
+            const touch = event.touches[0];
+            mouseX = (touch.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -((touch.clientY / window.innerHeight) * 2 - 1);
+        }
+    },
+    { passive: true }
+);
 
 document.addEventListener('touchend', () => {
     isTouching = false;
@@ -322,7 +363,10 @@ canvasWrappers.forEach((wrapper, index) => {
     light3.position.set(0, 0, 8);
     scene.add(light3);
 
-    scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = pmremGenerator.fromScene(
+        new RoomEnvironment(),
+        0.04
+    ).texture;
 
     gridScenes.push(scene);
     gridCameras.push(camera);
@@ -362,7 +406,6 @@ faceItems.forEach((item) => {
 // ===== SCROLL-BASED CONTACT ANIMATION =====
 const contactTitle = document.querySelector('.contact-title');
 const contactContent = document.querySelector('.contact-content');
-const contactSection = document.getElementById('contact-section');
 
 function updateContactOnScroll() {
     const titleRect = contactTitle.getBoundingClientRect();
@@ -388,22 +431,7 @@ function updateContactOnScroll() {
 window.addEventListener('scroll', updateContactOnScroll);
 updateContactOnScroll();
 
-// ===== SUBTLE RELATIVE PARALLAX (HERO) =====
-const parallaxStrength = 0.01;   // overall movement – small and subtle
-const faceLeadFactor = 0.3;      // face moves slightly more than text
-
-window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-
-    const offset = scrollY * parallaxStrength;
-
-    // Text: small movement
-    textMesh.position.y = baseTextY - offset;
-
-    // Face: slightly more, so it feels separated in depth
-    heroFace.position.y = baseFaceY - offset * (1 + faceLeadFactor);
-});
-
+// ===== RESIZE =====
 window.addEventListener('resize', () => {
     heroCamera.aspect = window.innerWidth / window.innerHeight;
     heroCamera.updateProjectionMatrix();
@@ -412,9 +440,11 @@ window.addEventListener('resize', () => {
     updateContactOnScroll();
 });
 
+// ===== ANIMATION LOOP =====
 function animate() {
     requestAnimationFrame(animate);
 
+    // Text intro scale animation
     if (isTextAnimating && !isMobile) {
         const elapsed = Date.now() - animationStartTime;
         const textDuration = 800;
@@ -438,6 +468,7 @@ function animate() {
         }
     }
 
+    // Hero face entrance drop + spin
     if (isAnimatingEntrance && !isMobile) {
         const elapsed = Date.now() - entranceStartTime;
         entranceProgress = Math.min(elapsed / entranceDuration, 1);
@@ -456,11 +487,14 @@ function animate() {
         const easedDrop = elasticEaseOut(entranceProgress);
         const easedSpin = spinEase(entranceProgress);
 
-        heroFace.position.y = entranceStartY + (entranceEndY - entranceStartY) * easedDrop;
+        // Vertical entrance only (not tied to scroll)
+        heroFace.position.y =
+            entranceStartY + (entranceEndY - entranceStartY) * easedDrop;
         heroFace.rotation.y = (1 - easedSpin) * entranceSpinSpeed;
         heroFace.rotation.x = Math.sin(entranceProgress * Math.PI) * 0.05;
 
-        const shadowProgress = (entranceStartY - heroFace.position.y) / entranceStartY;
+        const shadowProgress =
+            (entranceStartY - heroFace.position.y) / entranceStartY;
         const shadowScale = 0.3 + shadowProgress * 0.7;
         shadowMesh.scale.set(shadowScale, 1, shadowScale);
         shadowMaterial.opacity = shadowProgress * 0.8;
@@ -475,16 +509,20 @@ function animate() {
         }
     }
 
-    if ((isMobile || (!isAnimatingEntrance && !isTextAnimating))) {
+    // Gentle mouse tilt (does not affect scroll)
+    if (isMobile || (!isAnimatingEntrance && !isTextAnimating)) {
         const targetRotationY = mouseX * 0.5;
         const targetRotationX = -mouseY * 0.35;
 
-        heroFace.rotation.y += (targetRotationY - heroFace.rotation.y) * 0.08;
-        heroFace.rotation.x += (targetRotationX - heroFace.rotation.x) * 0.08;
+        heroFace.rotation.y +=
+            (targetRotationY - heroFace.rotation.y) * 0.08;
+        heroFace.rotation.x +=
+            (targetRotationX - heroFace.rotation.x) * 0.08;
     }
 
     heroRenderer.render(heroScene, heroCamera);
 
+    // Grid faces hover tilt
     gridFaces.forEach((face, index) => {
         let targetRotY = 0;
         let targetRotX = 0;
@@ -493,8 +531,15 @@ function animate() {
             const wrapper = canvasWrappers[index];
             const rect = wrapper.getBoundingClientRect();
 
-            const faceCenterX = ((rect.left + rect.width / 2) / window.innerWidth) * 2 - 1;
-            const faceCenterY = -((rect.top + rect.height / 2) / window.innerHeight) * 2 + 1;
+            const faceCenterX =
+                ((rect.left + rect.width / 2) / window.innerWidth) * 2 - 1;
+            const faceCenterY =
+                -(
+                    (rect.top + rect.height / 2) /
+                    window.innerHeight
+                ) *
+                    2 +
+                1;
 
             const directionX = mouseX - faceCenterX;
             const directionY = mouseY - faceCenterY;
