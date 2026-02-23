@@ -162,7 +162,7 @@ function createFace(material) {
 }
 
 const heroFace = createFace(glossyMaterial);
-const baseFaceY = 0;
+const baseFaceY = 0.8;
 heroFace.position.set(0, baseFaceY, 0);
 heroScene.add(heroFace);
 
