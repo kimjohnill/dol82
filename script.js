@@ -49,7 +49,7 @@ const subTextMaterial = new THREE.MeshBasicMaterial({
 });
 
 const subTextScale = isMobile ? 0.25 : 1;
-const subTextGeometry = new THREE.PlaneGeometry(24 * subTextScale, 4 * subTextScale);
+const subTextGeometry = new THREE.PlaneGeometry(24 * subTextScale, 6 * subTextScale);
 const subTextMesh = new THREE.Mesh(subTextGeometry, subTextMaterial);
 const baseSubTextY = isMobile ? -5.5 : -4.8;
 subTextMesh.position.set(0, baseSubTextY, isMobile ? 0 : -5);
