@@ -31,7 +31,7 @@ const glossyMaterial = new THREE.MeshStandardMaterial({
     envMapIntensity: 0.8
 });
 
-// ===== TEXT SETUP =====
+// ===== TOP TEXT (dolbag001 above face) =====
 let ctx3D = null;
 let textTexture = null;
 let isTextAnimating = true;
@@ -58,7 +58,6 @@ const baseTextY = isMobile ? 4 : 3.9;
 const textScale = isMobile ? 0.25 : 1;
 const textGeometry = new THREE.PlaneGeometry(32 * textScale, 9.5 * textScale);
 const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-// ORIGINAL Z position restored
 textMesh.position.set(0, baseTextY, isMobile ? 0 : -5);
 heroScene.add(textMesh);
 
@@ -82,6 +81,43 @@ function drawText(scaleProgress) {
     ctx3D.fillText('dolbag001', 0, 0);
     ctx3D.restore();
     textTexture.needsUpdate = true;
+}
+
+// ===== SUB TEXT (dolbag001 below face) =====
+const canvasSubText = document.createElement('canvas');
+canvasSubText.width = 2048;
+canvasSubText.height = 512;
+const ctxSub = canvasSubText.getContext('2d', { alpha: true, colorSpace: 'srgb' });
+
+const subTextTexture = new THREE.CanvasTexture(canvasSubText);
+subTextTexture.colorSpace = THREE.SRGBColorSpace;
+
+const subTextMaterial = new THREE.MeshBasicMaterial({
+    map: subTextTexture,
+    transparent: true,
+    opacity: 1,
+    toneMapped: false,
+    depthWrite: false
+});
+
+const subTextScale = isMobile ? 0.25 : 1;
+const subTextGeometry = new THREE.PlaneGeometry(32 * subTextScale, 9.5 * subTextScale);
+const subTextMesh = new THREE.Mesh(subTextGeometry, subTextMaterial);
+const baseSubTextY = isMobile ? -5.5 : -4.8;
+subTextMesh.position.set(0, baseSubTextY, isMobile ? 0 : -5);
+heroScene.add(subTextMesh);
+
+function drawSubText() {
+    ctxSub.clearRect(0, 0, 2048, 512);
+    ctxSub.save();
+    ctxSub.translate(1024, 256);
+    ctxSub.fillStyle = '#ffffff';
+    ctxSub.font = '900 300px Roboto, sans-serif';
+    ctxSub.textBaseline = 'middle';
+    ctxSub.textAlign = 'center';
+    ctxSub.fillText('dolbag001', 0, 0);
+    ctxSub.restore();
+    subTextTexture.needsUpdate = true;
 }
 
 // ===== SHADOW =====
@@ -175,7 +211,6 @@ function createFace(material) {
 }
 
 const heroFace = createFace(glossyMaterial);
-// ORIGINAL position restored — Z = 0, not -4.5
 const baseFaceY = 0;
 heroFace.position.set(0, baseFaceY, 0);
 heroScene.add(heroFace);
@@ -187,9 +222,13 @@ if (isMobile) {
     shadowMaterial.opacity = 0.8;
     isTextAnimating = false;
     drawText(1);
+    drawSubText();
 } else {
     heroFace.visible = false;
 }
+
+// ===== dol82 OVERLAY =====
+const dol82El = document.getElementById('dol82-label');
 
 // ===== LIGHTS =====
 heroScene.add(new THREE.AmbientLight(0xffffff, 0.5));
@@ -245,15 +284,23 @@ document.addEventListener('touchend', () => { mouseX = 0; mouseY = 0; });
 document.addEventListener('mouseleave', () => { mouseX = 0; mouseY = 0; });
 
 // ===== PARALLAX ON SCROLL =====
-// Both face and text move up as you scroll but face moves slightly more
-// This only runs while the hero is visible
 window.addEventListener('scroll', () => {
-    if (isAnimatingEntrance) return; // don't fight entrance animation
+    if (isAnimatingEntrance) return;
     const t = Math.min(window.scrollY / window.innerHeight, 1);
-// text moves up gently
-textMesh.position.y = baseTextY - t * 0.7;
-// face moves up a little more — creates the offset
-heroFace.position.y = baseFaceY - t * 1.4;
+
+    // top dolbag001 — moves up gently
+    textMesh.position.y = baseTextY - t * 0.7;
+
+    // face — moves up the most (fastest)
+    heroFace.position.y = baseFaceY - t * 1.4;
+
+    // sub dolbag001 — moves up slowest (creates layered depth)
+    subTextMesh.position.y = baseSubTextY - t * 0.4;
+
+    // dol82 HTML overlay — very subtle upward drift
+    if (dol82El) {
+        dol82El.style.transform = `translateY(${-window.scrollY * 0.12}px)`;
+    }
 });
 
 // ===== GRID FACES =====
@@ -381,6 +428,8 @@ function animate() {
                 entranceStartTime = Date.now();
                 heroFace.visible = true;
                 shadowMesh.visible = true;
+                // draw sub text once face entrance begins
+                drawSubText();
             }
         }
     }
