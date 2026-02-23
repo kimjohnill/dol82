@@ -168,7 +168,7 @@ heroScene.add(heroFace);
 
 if (isMobile) {
     heroFace.visible = true;
-    heroFace.position.y = -0.5;
+    heroFace.position.y = baseFaceY;
     shadowMesh.visible = false;
     shadowMaterial.opacity = 0.8;
 } else {
