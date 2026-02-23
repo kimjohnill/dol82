@@ -31,58 +31,6 @@ const glossyMaterial = new THREE.MeshStandardMaterial({
     envMapIntensity: 0.8
 });
 
-// ===== TOP TEXT (dolbag001 above face) =====
-let ctx3D = null;
-let textTexture = null;
-let isTextAnimating = true;
-const animationStartTime = Date.now();
-let textScaleProgress = 0;
-
-const canvas3DText = document.createElement('canvas');
-canvas3DText.width = 2048;
-canvas3DText.height = 512;
-ctx3D = canvas3DText.getContext('2d', { alpha: true, colorSpace: 'srgb' });
-
-textTexture = new THREE.CanvasTexture(canvas3DText);
-textTexture.colorSpace = THREE.SRGBColorSpace;
-
-const textMaterial = new THREE.MeshBasicMaterial({
-    map: textTexture,
-    transparent: true,
-    opacity: 1,
-    toneMapped: false,
-    depthWrite: false
-});
-
-const baseTextY = isMobile ? 4 : 3.9;
-const textScale = isMobile ? 0.25 : 1;
-const textGeometry = new THREE.PlaneGeometry(32 * textScale, 9.5 * textScale);
-const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-textMesh.position.set(0, baseTextY, isMobile ? 0 : -5);
-heroScene.add(textMesh);
-
-function drawText(scaleProgress) {
-    if (!ctx3D || !textTexture) return;
-    const elasticEaseOut = (t) => {
-        if (t === 0 || t === 1) return t;
-        const p = 0.3;
-        const s = p / 4;
-        return Math.pow(2, -10 * t) * Math.sin(((t - s) * (2 * Math.PI)) / p) + 1;
-    };
-    const easedScale = elasticEaseOut(scaleProgress);
-    ctx3D.clearRect(0, 0, 2048, 512);
-    ctx3D.save();
-    ctx3D.translate(1024, 256);
-    ctx3D.scale(easedScale, easedScale);
-    ctx3D.fillStyle = '#ffffff';
-    ctx3D.font = '900 300px Roboto, sans-serif';
-    ctx3D.textBaseline = 'middle';
-    ctx3D.textAlign = 'center';
-    ctx3D.fillText('dolbag001', 0, 0);
-    ctx3D.restore();
-    textTexture.needsUpdate = true;
-}
-
 // ===== SUB TEXT (dolbag001 below face) =====
 const canvasSubText = document.createElement('canvas');
 canvasSubText.width = 2048;
@@ -101,7 +49,7 @@ const subTextMaterial = new THREE.MeshBasicMaterial({
 });
 
 const subTextScale = isMobile ? 0.25 : 1;
-const subTextGeometry = new THREE.PlaneGeometry(32 * subTextScale, 9.5 * subTextScale);
+const subTextGeometry = new THREE.PlaneGeometry(20 * subTextScale, 6 * subTextScale);
 const subTextMesh = new THREE.Mesh(subTextGeometry, subTextMaterial);
 const baseSubTextY = isMobile ? -5.5 : -4.8;
 subTextMesh.position.set(0, baseSubTextY, isMobile ? 0 : -5);
@@ -119,6 +67,9 @@ function drawSubText() {
     ctxSub.restore();
     subTextTexture.needsUpdate = true;
 }
+
+// Draw sub text immediately
+drawSubText();
 
 // ===== SHADOW =====
 const shadowCanvas = document.createElement('canvas');
@@ -220,10 +171,8 @@ if (isMobile) {
     heroFace.position.y = -0.5;
     shadowMesh.visible = true;
     shadowMaterial.opacity = 0.8;
-    isTextAnimating = false;
-    drawText(1);
-    drawSubText();
 } else {
+    // Face hidden until entrance animation starts
     heroFace.visible = false;
 }
 
@@ -252,13 +201,21 @@ const pmremGenerator = new THREE.PMREMGenerator(heroRenderer);
 heroScene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
 // ===== ENTRANCE ANIMATION =====
-let isAnimatingEntrance = !isMobile;
+// Face drops in immediately on page load — no text animation delay
+let isAnimatingEntrance = false;
 let entranceProgress = 0;
 const entranceStartY = 20;
 const entranceEndY = 0;
 const entranceSpinSpeed = Math.PI * 8;
 const entranceDuration = 1500;
 let entranceStartTime = 0;
+
+if (!isMobile) {
+    isAnimatingEntrance = true;
+    entranceStartTime = Date.now();
+    heroFace.visible = true;
+    shadowMesh.visible = true;
+}
 
 // ===== MOUSE / TOUCH =====
 let mouseX = 0;
@@ -288,16 +245,13 @@ window.addEventListener('scroll', () => {
     if (isAnimatingEntrance) return;
     const t = Math.min(window.scrollY / window.innerHeight, 1);
 
-    // top dolbag001 — moves up gently
-    textMesh.position.y = baseTextY - t * 0.7;
-
-    // face — moves up the most (fastest)
+    // face moves up the most
     heroFace.position.y = baseFaceY - t * 1.4;
 
-    // sub dolbag001 — moves up slowest (creates layered depth)
+    // sub dolbag001 moves up slowest
     subTextMesh.position.y = baseSubTextY - t * 0.4;
 
-    // dol82 HTML overlay — very subtle upward drift
+    // dol82 HTML overlay subtle drift
     if (dol82El) {
         dol82El.style.transform = `translateY(${-window.scrollY * 0.12}px)`;
     }
@@ -410,30 +364,6 @@ window.addEventListener('resize', () => {
 function animate() {
     requestAnimationFrame(animate);
 
-    if (isTextAnimating && !isMobile) {
-        const elapsed = Date.now() - animationStartTime;
-        const textDuration = 800;
-        const textDelay = 500;
-
-        if (elapsed < textDelay) {
-            textScaleProgress = 0;
-            drawText(textScaleProgress);
-        } else {
-            const textElapsed = elapsed - textDelay;
-            textScaleProgress = Math.min(textElapsed / textDuration, 1);
-            drawText(textScaleProgress);
-            if (textScaleProgress >= 1) {
-                isTextAnimating = false;
-                isAnimatingEntrance = true;
-                entranceStartTime = Date.now();
-                heroFace.visible = true;
-                shadowMesh.visible = true;
-                // draw sub text once face entrance begins
-                drawSubText();
-            }
-        }
-    }
-
     if (isAnimatingEntrance && !isMobile) {
         const elapsed = Date.now() - entranceStartTime;
         entranceProgress = Math.min(elapsed / entranceDuration, 1);
@@ -469,7 +399,7 @@ function animate() {
         }
     }
 
-    if (isMobile || (!isAnimatingEntrance && !isTextAnimating)) {
+    if (isMobile || !isAnimatingEntrance) {
         const targetRotationY = mouseX * 0.5;
         const targetRotationX = -mouseY * 0.35;
         heroFace.rotation.y += (targetRotationY - heroFace.rotation.y) * 0.08;
