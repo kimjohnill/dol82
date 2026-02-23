@@ -169,7 +169,7 @@ heroScene.add(heroFace);
 if (isMobile) {
     heroFace.visible = true;
     heroFace.position.y = -0.5;
-    shadowMesh.visible = true;
+    shadowMesh.visible = false;
     shadowMaterial.opacity = 0.8;
 } else {
     // Face hidden until entrance animation starts
@@ -214,7 +214,7 @@ if (!isMobile) {
     isAnimatingEntrance = true;
     entranceStartTime = Date.now();
     heroFace.visible = true;
-    shadowMesh.visible = true;
+    shadowMesh.visible = false;
 }
 
 // ===== MOUSE / TOUCH =====
