@@ -249,7 +249,7 @@ heroFace.position.y = baseFaceY - t * (isMobile ? 3.0 : 2.2);
 subTextMesh.position.y = baseSubTextY - t * (isMobile ? 1.5 : 1.0);
 
     if (dol82El) {
-        dol82El.style.transform = `translateY(${-window.scrollY * (isMobile ? 0.3 : 0.12)}px)`;
+        dol82El.style.transform = `translateY(${-window.scrollY * (isMobile ? 1.2 : 0.8)}px)`;
     }
 });
 
