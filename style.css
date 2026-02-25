@@ -358,6 +358,9 @@ footer {
     .footer-no-break {
         display: none;
     }
+        #dol82-label {
+        font-size: 28px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -391,5 +394,9 @@ footer {
 
     .contact-link {
         font-size: 20px;
+    }
+
+        #dol82-label {
+        font-size: 28px;
     }
 }
