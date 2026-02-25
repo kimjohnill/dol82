@@ -245,8 +245,8 @@ window.addEventListener('scroll', () => {
     if (isAnimatingEntrance) return;
     const t = Math.min(window.scrollY / window.innerHeight, 1);
 
-    heroFace.position.y = baseFaceY - t * (isMobile ? 3.0 : 1.4);
-    subTextMesh.position.y = baseSubTextY - t * (isMobile ? 1.5 : 0.4);
+heroFace.position.y = baseFaceY - t * (isMobile ? 3.0 : 2.2);
+subTextMesh.position.y = baseSubTextY - t * (isMobile ? 1.5 : 1.0);
 
     if (dol82El) {
         dol82El.style.transform = `translateY(${-window.scrollY * (isMobile ? 0.3 : 0.12)}px)`;
