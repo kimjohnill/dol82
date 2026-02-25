@@ -245,17 +245,14 @@ window.addEventListener('scroll', () => {
     if (isAnimatingEntrance) return;
     const t = Math.min(window.scrollY / window.innerHeight, 1);
 
-    // face moves up the most
-    heroFace.position.y = baseFaceY - t * 1.4;
+    heroFace.position.y = baseFaceY - t * (isMobile ? 3.0 : 1.4);
+    subTextMesh.position.y = baseSubTextY - t * (isMobile ? 1.5 : 0.4);
 
-    // sub dolbag001 moves up slowest
-    subTextMesh.position.y = baseSubTextY - t * 0.4;
-
-    // dol82 HTML overlay subtle drift
     if (dol82El) {
-        dol82El.style.transform = `translateY(${-window.scrollY * 0.12}px)`;
+        dol82El.style.transform = `translateY(${-window.scrollY * (isMobile ? 0.3 : 0.12)}px)`;
     }
 });
+
 
 // ===== GRID FACES =====
 const faceItems = document.querySelectorAll('.face-item');
